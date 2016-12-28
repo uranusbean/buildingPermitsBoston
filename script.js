@@ -73,7 +73,7 @@ var timelineChart = d3.select('.canvas')
 // var scaleColor = d3.scaleOrdinal().range(d3.schemeCategory20c);
 var scaleColor = d3.scaleOrdinal()
     .range(['#E57373','#BA68C8','#7986CB','#64B5F6','#4FC3F7','#FF8A65','#4DB6AC',
-            '#81C784','#AED581','#DCE775','#FFF176','#FFD54F','#A1887F']);
+            '#81C784','#AED581','#DCE775','#FFF176','#FFD54F','#bec72c']);
 var yearFormat = d3.timeFormat('%Y');
 
 var pie = d3.pie()
@@ -209,7 +209,8 @@ function dataloaded(err, data){
               // console.log(zipTable[zip]);
               return zipTable[zip];})
             .style('text-anchor', 'middle')
-            .style("cursor", "pointer")
+            .style('cursor', 'pointer')
+            .style('fill','#eee')
             .on('click',function(d,i){
               // console.log($(this).html()); //get the neighbourhood name
               for (var keyZip in zipTable){
@@ -222,6 +223,7 @@ function dataloaded(err, data){
 
     piechart.append('text')
             .text(function(){return formatValue(permitByZipType[i].sum);})
+            .style('fill','#eee')
             .style('text-anchor', 'middle');
 
     piechart.on('click',function(d){
@@ -272,9 +274,11 @@ function drawTimeline(zip, permitByZipYear){
   //Draw axis
   timelineChart.append('g').attr('class','axis axis-x')
       .attr('transform','translate(20,'+h/3+')')
+      .style('stroke','#c3c3c3')
       .call(axisX);
   timelineChart.append('g').attr('class','axis axis-y')
       .attr('transform','translate(20,0)')
+      .style('stroke','#c3c3c3')
       .call(axisY);
 
   for (var i = 0; i < permitByZipYear.length; i++) {
@@ -297,6 +301,7 @@ function drawTimeline(zip, permitByZipYear){
     .append('circle')
     .attr('transform','translate(20,0)')
     .attr('class','node')
+    .style('stroke','none')
     .on('click',function(d,i){
       //  console.log(d);
       //  console.log(i);
@@ -314,14 +319,15 @@ function drawTimeline(zip, permitByZipYear){
        return scaleY(d.value);
      })
      .attr('r',5)
-     .style('fill','#565656')
+     .style('fill','#eee')
      .style('opacity',1);
 
    //EXIT
     node.exit().remove();
 
     //Apend the <path>
-    timelineChart.append('path').attr('class','time-series');
+    timelineChart.append('path')
+      .attr('class','time-series');
     //Draw <path>
     timelineChart.select('.time-series')
       .datum(data)

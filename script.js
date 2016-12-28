@@ -339,7 +339,7 @@ function drawTimeline(zip, permitByZipYear){
       .attr('transform','translate(20,0)')
       .style('fill','none')
       .style('stroke-width','2px')
-      .style('stroke','#565656');
+      .style('stroke','#c3c3c3');
 }
 
 function parse(d){

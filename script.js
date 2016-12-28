@@ -42,6 +42,7 @@ var margin = 10, r = 50;
 var formatValue = d3.format(".2s");
 
 var scaleX = d3.scaleLinear()
+  .domain([2009,2016])
   // .domain([parseInt(2009),parseInt(2016)])
   .range([0,w/3]);
 var scaleY = d3.scaleLinear()
@@ -51,7 +52,8 @@ var scaleY = d3.scaleLinear()
 //Axis
 var axisX = d3.axisBottom()
   .scale(scaleX)
-  .tickSize(3);
+  .tickSize(3)
+  .ticks(8);
 var axisY = d3.axisLeft()
   .scale(scaleY)
   .tickSize(-w);
@@ -134,6 +136,9 @@ function dataloaded(err, data){
   function sortDates(a, b){return a.getTime() - b.getTime();}
   var issueDates = [], expireDates = [];
   for (var i = 0; i < data.length; i++) {
+    if(yearFormat(data[i].issueDate) < 2008) {
+      continue;
+    }
     issueDates.push(new Date(data[i].issueDate));
   }
   for (var i = 0; i < data.length; i++) {
@@ -154,7 +159,7 @@ function dataloaded(err, data){
   // console.log(maxExpireDate);
 
   //--------SET SCALEX DOMAIN-----------
-  scaleX.domain([parseInt(yearFormat(minIssueDate)),parseInt(yearFormat(maxIssueDate))]);
+  // scaleX.domain([parseInt(yearFormat(minIssueDate)),parseInt(yearFormat(maxIssueDate))]);
 
   //--------GET THE SUM OF BUDGET OF EACH TYPE -------
   for (var i = 0; i < permitByZipType.length; i++) {
@@ -229,7 +234,6 @@ function dataloaded(err, data){
     piechart.on('click',function(d){
       $('svg:first-child').css('margin-left','0');
       $('svg:nth-last-child(1)').css('visibility','visible');
-
       // if($('svg:nth-last-child(1)').css('visibility') == 'hidden'){
       //   $('svg:nth-last-child(1)').css('visibility','visible')
       // } else $('svg:nth-last-child(1)').css('visibility','hidden')
